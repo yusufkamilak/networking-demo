@@ -17,8 +17,11 @@ struct HomeContentView: View {
                 Text(item.title)
             }
         }
-        .onAppear {
-            viewModel.fetchItems()
+        .task {
+            await viewModel.fetchItems()
+        }
+        .refreshable {
+            await viewModel.fetchItems()
         }
     }
 }

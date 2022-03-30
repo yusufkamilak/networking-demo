@@ -15,7 +15,13 @@ class HomeViewModel: ObservableObject {
 
     @Published private(set) var items: [PostItem]
 
-    func fetchItems() {
+    @discardableResult
+    func fetchItems() async -> [PostItem] {
+        self.items = await HomeService().getPosts() ?? []
+        return self.items
+    }
+
+    func fetchItemsByCallbacks() {
         HomeService().getPosts { [weak self] postItems in
             if let postItems = postItems {
                 DispatchQueue.main.async {

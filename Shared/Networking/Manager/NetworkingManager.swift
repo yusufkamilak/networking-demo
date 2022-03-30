@@ -51,7 +51,21 @@ final class NetworkingManager {
 
     // MARK: - Async/await
 
-    
+    func sendRequest<T: Decodable>(for type: T.Type = T.self,
+                                   endpoint: APIConfiguration) async -> Result<T, Error> {
+        guard let request = endpoint.asURLRequest() else {
+            return .failure(NetworkingError.invalidRequest)
+        }
+
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+            debugPrint(response)
+            let postItems = try JSONDecoder().decode(T.self, from: data)
+            return .success(postItems)
+        } catch {
+            return .failure(error)
+        }
+    }
 
     // MARK: - Combine
 
