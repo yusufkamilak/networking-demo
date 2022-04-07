@@ -15,21 +15,25 @@ class HomeViewModel: ObservableObject {
 
     @Published private(set) var items: [PostItem]
 
+    // MARK: - Async / await
     @discardableResult
-    func fetchItems() async -> [PostItem] {
-        self.items = await HomeService().getPosts() ?? []
+    func fetchItemsWithAsyncAwaitStrategy() -> [PostItem] {
+        HomeService().getPosts(by: .asyncAwait) { [weak self] postItems in
+            // The point of callback in this function is abstracting the details of strategy from the user so that we can migrate existing functions to async/await still using callback without having to change everywhere. The only difference is that callbacks are getting filled by an async Task instead of traditional way.
+            DispatchQueue.main.async {
+                self?.items = postItems ?? []
+            }
+        }
         return self.items
     }
 
-    func fetchItemsByCallbacks() {
-        HomeService().getPosts { [weak self] postItems in
-            if let postItems = postItems {
-                DispatchQueue.main.async {
-                    self?.items = postItems
-                }
-            } else {
-                // Show some errors and placeholder view.
-            }
+    // MARK: - Traditional way. (Duplicating method just to demonstrate only difference is the parameter.)
+    @discardableResult
+    func fetchItemsWithTraditionalWay() -> [PostItem] {
+        HomeService().getPosts(by: .callback) { [weak self] postItems in
+            // The point of callback in this function is abstracting the details of strategy from the user so that we can migrate existing functions to async/await still using callback without having to change everywhere. The only difference is that callbacks are getting filled by an async Task instead of traditional way.
+            self?.items = postItems ?? []
         }
+        return self.items
     }
 }

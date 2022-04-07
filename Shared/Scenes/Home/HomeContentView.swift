@@ -17,11 +17,12 @@ struct HomeContentView: View {
                 Text(item.title)
             }
         }
-        .task {
-            await viewModel.fetchItems()
+        .onAppear {
+            // This is quite important because we were able to call an async/await function inside a function that does not support async `onAppear`. Normally, if we wouldn't use Task inside implementation of fetchItems, we would have to call this function inside `.task` instead of here.
+            viewModel.fetchItemsWithAsyncAwaitStrategy()
         }
         .refreshable {
-            await viewModel.fetchItems()
+            viewModel.fetchItemsWithTraditionalWay()
         }
     }
 }

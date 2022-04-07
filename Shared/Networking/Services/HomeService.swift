@@ -9,6 +9,21 @@ import Foundation
 
 class HomeService: BaseService {
 
+    func getPosts(by strategy: NetworkingStrategy, callback: @escaping (([PostItem]?) -> Void)) {
+        switch strategy {
+        case .callback:
+            getPosts(callback: callback)
+        case .asyncAwait:
+            // We break the async chain by using Task here so that we don't have to make `getPosts` async as well.
+            Task {
+                let posts = await getPosts()
+                callback(posts)
+            }
+        case .combine:
+            break
+        }
+    }
+
     /// async await
     func getPosts() async -> [PostItem]? {
         let endpoint = HomeAPIEndpoints.posts
@@ -26,7 +41,7 @@ class HomeService: BaseService {
     }
 
     /// traditional way for making an asynchronous call and getting response from callback
-    func getPosts(callback: @escaping ([PostItem]?) -> Void) {
+    func getPosts(callback: @escaping (([PostItem]?) -> Void)) {
         let endpoint = HomeAPIEndpoints.posts
 
         networkingManager.sendRequest(for: [PostItem].self,
