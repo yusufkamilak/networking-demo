@@ -6,8 +6,16 @@
 //
 
 import Foundation
+import Combine
 
 class HomeService: BaseService {
+
+    // MARK: - Properties
+
+    /// We need to retain subscriptions as long as we need them. To ensure preventing a retain cycle, they need to be defined as Cancellable so that they will be deleted automatically when they are no longer used or deinit is called.
+    var subscriptions = Set<AnyCancellable>()
+
+    var callback: (([PostItem]?) -> Void)?
 
     func getPosts(by strategy: NetworkingStrategy, callback: @escaping (([PostItem]?) -> Void)) {
         switch strategy {
@@ -20,12 +28,13 @@ class HomeService: BaseService {
                 callback(posts)
             }
         case .combine:
-            break
+            getPostsWithCombine(callback: callback)
         }
     }
 
-    /// async await
-    func getPosts() async -> [PostItem]? {
+    // MARK: - async await
+
+    private func getPosts() async -> [PostItem]? {
         let endpoint = HomeAPIEndpoints.posts
 
         let result = await networkingManager
@@ -40,8 +49,8 @@ class HomeService: BaseService {
         }
     }
 
-    /// traditional way for making an asynchronous call and getting response from callback
-    func getPosts(callback: @escaping (([PostItem]?) -> Void)) {
+    // MARK: - traditional way for making an asynchronous call and getting response from callback
+    private func getPosts(callback: @escaping (([PostItem]?) -> Void)) {
         let endpoint = HomeAPIEndpoints.posts
 
         networkingManager.sendRequest(for: [PostItem].self,
@@ -54,5 +63,32 @@ class HomeService: BaseService {
                 callback(postItems)
             }
         }
+    }
+
+    // MARK: - Combine
+    private func getPosts() -> AnyPublisher<[PostItem], Error> {
+        let endpoint = HomeAPIEndpoints.posts
+
+        return networkingManager
+            .sendRequest(for: [PostItem].self, endpoint: endpoint)
+    }
+
+    private func getPostsWithCombine(callback: @escaping ([PostItem]?) -> Void) {
+        getPosts()
+            .sink(receiveCompletion: { (completion) in
+                switch completion {
+                case .failure(let error):
+                    debugPrint(error)
+                    callback(nil)
+                case .finished:
+                    print("Entered finished case")
+                    break
+                }
+            }, receiveValue: { (postItems) in
+                // Normally using callback with Combine is a bit unusual and against its purpose of usage. But since we want to create an abstraction between network layer and client about used strategy, we decided to stick with callbacks and use them in all networking strategies to provide a single output for all methods.
+                print("Entered receiveValue")
+                callback(postItems)
+            })
+        .store(in: &subscriptions)
     }
 }

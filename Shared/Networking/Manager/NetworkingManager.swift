@@ -6,12 +6,30 @@
 //
 
 import Foundation
+import Combine
 
 enum Environment: String {
     case staging, mock
 }
 
-final class NetworkingManager {
+protocol NetworkingManagerProtocol: AnyObject {
+
+    var environment: Environment { get }
+
+    /// Traditional way
+    func sendRequest<T: Decodable>(for type: T.Type,
+                                   endpoint: APIConfiguration,
+                                   callback: @escaping (Result<T, Error>) -> Void)
+    /// Async/await
+    func sendRequest<T: Decodable>(for type: T.Type,
+                                   endpoint: APIConfiguration) async -> Result<T, Error>
+    /// Combine
+    func sendRequest<T: Decodable>(for type: T.Type,
+                                   endpoint: APIConfiguration) -> AnyPublisher<T, Error>
+
+}
+
+final class NetworkingManager: NetworkingManagerProtocol {
 
     // MARK: - Init
 
@@ -28,7 +46,7 @@ final class NetworkingManager {
     func sendRequest<T: Decodable>(for type: T.Type = T.self,
                                    endpoint: APIConfiguration,
                                    callback: @escaping (Result<T, Error>) -> Void) {
-        guard let request = endpoint.asURLRequest() else {
+        guard let request = endpoint.asURLRequest(environment: environment) else {
             callback(.failure(NetworkingError.invalidRequest))
             return
         }
@@ -53,7 +71,7 @@ final class NetworkingManager {
 
     func sendRequest<T: Decodable>(for type: T.Type = T.self,
                                    endpoint: APIConfiguration) async -> Result<T, Error> {
-        guard let request = endpoint.asURLRequest() else {
+        guard let request = endpoint.asURLRequest(environment: environment) else {
             return .failure(NetworkingError.invalidRequest)
         }
 
@@ -66,7 +84,25 @@ final class NetworkingManager {
             return .failure(error)
         }
     }
-
+    
     // MARK: - Combine
 
+    func sendRequest<T: Decodable>(for type: T.Type = T.self,
+                                   endpoint: APIConfiguration) -> AnyPublisher<T, Error> {
+        guard let request = endpoint.asURLRequest(environment: environment) else {
+            // error handling
+            fatalError()
+        }
+
+        return URLSession.shared.dataTaskPublisher(for: request)
+            .tryMap({ element in
+                print("Entered tryMap")
+                guard let response = element.response as? HTTPURLResponse, response.statusCode == 200 else {
+                    throw URLError(.badServerResponse)
+                }
+                return element.data
+            })
+            .decode(type: T.self, decoder: JSONDecoder())
+            .eraseToAnyPublisher()
+    }
 }

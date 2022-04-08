@@ -12,13 +12,14 @@ protocol APIConfiguration {
     var path: String { get }
     var parameters: [String : Any]? { get }
     var pathParameters: [String: Any]? { get }
-    func asURLRequest() -> URLRequest?
+    func asURLRequest(environment: Environment) -> URLRequest?
 }
 
 extension APIConfiguration {
 
-    func asURLRequest() -> URLRequest? {
-        guard var components = URLComponents(string: APIConstants.StagingServer.baseURL + path) else {
+    func asURLRequest(environment: Environment = .staging) -> URLRequest? {
+        let baseURL = environment == .staging ? APIConstants.StagingServer.baseURL : APIConstants.MockServer.baseURL
+        guard var components = URLComponents(string: baseURL + path) else {
             return nil
         }
 

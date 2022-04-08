@@ -13,6 +13,10 @@ struct APIConstants {
         static let baseURL = "https://jsonplaceholder.typicode.com"
     }
 
+    struct MockServer {
+        static let baseURL = "https://127.0.0.1:8080"
+    }
+
     struct ParameterKey {
         static let userId = "userId"
         static let id = "id"

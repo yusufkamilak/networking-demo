@@ -13,13 +13,19 @@ struct HomeContentView: View {
 
     var body: some View {
         VStack {
+            Button {
+
+            } label: {
+                Text("Combine Screen")
+            }
+
             List(viewModel.items) { item in
                 Text(item.title)
             }
         }
         .onAppear {
             // This is quite important because we were able to call an async/await function inside a function that does not support async `onAppear`. Normally, if we wouldn't use Task inside implementation of fetchItems, we would have to call this function inside `.task` instead of here.
-            viewModel.fetchItemsWithAsyncAwaitStrategy()
+            viewModel.fetchItemsWithCombine()
         }
         .refreshable {
             viewModel.fetchItemsWithTraditionalWay()

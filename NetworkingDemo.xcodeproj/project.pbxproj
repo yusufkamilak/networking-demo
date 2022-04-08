@@ -107,6 +107,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		90BDDBFF27FF455B00A30FD8 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
 		90FC289527F4D95B009BD5C2 = {
 			isa = PBXGroup;
 			children = (
@@ -121,6 +128,7 @@
 		90FC289A27F4D95B009BD5C2 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				90BDDBFF27FF455B00A30FD8 /* Common */,
 				90FC28DF27F4DA5A009BD5C2 /* App */,
 				90FC28DC27F4DA35009BD5C2 /* Models */,
 				90FC28D727F4D96B009BD5C2 /* Networking */,
