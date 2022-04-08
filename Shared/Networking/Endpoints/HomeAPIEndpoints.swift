@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum HomeAPIEndpoints: APIConfiguration {
+enum HomeAPIEndpoints: Equatable, APIConfiguration {
 
     // MARK: - Endpoints
     case posts

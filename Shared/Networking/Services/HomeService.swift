@@ -15,7 +15,7 @@ class HomeService: BaseService {
     /// We need to retain subscriptions as long as we need them. To ensure preventing a retain cycle, they need to be defined as Cancellable so that they will be deleted automatically when they are no longer used or deinit is called.
     var subscriptions = Set<AnyCancellable>()
 
-    var callback: (([PostItem]?) -> Void)?
+    var getPostsPublishers: [HomeAPIEndpoints: AnyPublisher<[PostItem], Error>] = [:]
 
     func getPosts(by strategy: NetworkingStrategy, callback: @escaping (([PostItem]?) -> Void)) {
         switch strategy {
@@ -68,9 +68,14 @@ class HomeService: BaseService {
     // MARK: - Combine
     private func getPosts() -> AnyPublisher<[PostItem], Error> {
         let endpoint = HomeAPIEndpoints.posts
+        if let getPostsPublisher = getPostsPublishers[endpoint] {
+            return getPostsPublisher
+        }
 
-        return networkingManager
+        let publisher = networkingManager
             .sendRequest(for: [PostItem].self, endpoint: endpoint)
+        getPostsPublishers[endpoint] = publisher
+        return publisher
     }
 
     private func getPostsWithCombine(callback: @escaping ([PostItem]?) -> Void) {
@@ -90,5 +95,6 @@ class HomeService: BaseService {
                 callback(postItems)
             })
         .store(in: &subscriptions)
+
     }
 }

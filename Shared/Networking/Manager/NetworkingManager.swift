@@ -103,6 +103,7 @@ final class NetworkingManager: NetworkingManagerProtocol {
                 return element.data
             })
             .decode(type: T.self, decoder: JSONDecoder())
+            .share()
             .eraseToAnyPublisher()
     }
 }
