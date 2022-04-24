@@ -7,22 +7,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "2A21C7E0-1BD0-4C70-AF5D-F37ABBF55418"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Shared/Networking/Services/HomeService.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "70"
-            endingLineNumber = "70"
-            landmarkName = "getPosts()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "F3318BF7-EA1A-4653-AB1B-C6946A366C97"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -30,8 +14,8 @@
             filePath = "Shared/Networking/Services/HomeService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "86"
-            endingLineNumber = "86"
+            startingLineNumber = "93"
+            endingLineNumber = "93"
             landmarkName = "getPostsWithCombine(callback:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -46,8 +30,8 @@
             filePath = "Shared/Networking/Services/HomeService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "89"
-            endingLineNumber = "89"
+            startingLineNumber = "96"
+            endingLineNumber = "96"
             landmarkName = "getPostsWithCombine(callback:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -62,10 +46,58 @@
             filePath = "Shared/Networking/Services/HomeService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "94"
-            endingLineNumber = "94"
+            startingLineNumber = "101"
+            endingLineNumber = "101"
             landmarkName = "getPostsWithCombine(callback:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "61456EC5-2922-486D-8715-DBA8DD75508A"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Shared/Networking/Protocols/APIConfiguration.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "26"
+            endingLineNumber = "26"
+            landmarkName = "asURLRequest(environment:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "61456EC5-2922-486D-8715-DBA8DD75508A - 9440c637a27ad3ad"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "NetworkingDemo.APIConfiguration.asURLRequest(environment: NetworkingDemo.Environment) -&gt; Swift.Optional&lt;Foundation.URLRequest&gt;"
+                  moduleName = "NetworkingDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/yusufkamilak/Projects/NetworkingDemo/Shared/Networking/Protocols/APIConfiguration.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "26"
+                  endingLineNumber = "26"
+                  offsetFromSymbolStart = "1128">
+               </Location>
+               <Location
+                  uuid = "61456EC5-2922-486D-8715-DBA8DD75508A - 9440c637a27ad3ad"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "NetworkingDemo.APIConfiguration.asURLRequest(environment: NetworkingDemo.Environment) -&gt; Swift.Optional&lt;Foundation.URLRequest&gt;"
+                  moduleName = "NetworkingDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/yusufkamilak/Projects/NetworkingDemo/Shared/Networking/Protocols/APIConfiguration.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "26"
+                  endingLineNumber = "26"
+                  offsetFromSymbolStart = "1188">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

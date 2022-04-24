@@ -20,5 +20,5 @@ class BaseService {
 
     private(set) var networkingManager: NetworkingManager
 
-    private(set) var strategy: NetworkingStrategy
+    public var strategy: NetworkingStrategy
 }

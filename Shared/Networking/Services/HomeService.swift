@@ -8,7 +8,14 @@
 import Foundation
 import Combine
 
-class HomeService: BaseService {
+protocol HomeServiceProtocol: AnyObject {
+    var subscriptions: Set<AnyCancellable> { set get }
+    var getPostsPublishers: [HomeAPIEndpoints: AnyPublisher<[PostItem], Error>] { set get }
+
+    func getPosts(by strategy: NetworkingStrategy, callback: @escaping (([PostItem]?) -> Void))
+}
+
+class HomeService: BaseService, HomeServiceProtocol {
 
     // MARK: - Properties
 

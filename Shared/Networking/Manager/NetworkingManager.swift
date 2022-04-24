@@ -22,7 +22,7 @@ protocol NetworkingManagerProtocol: AnyObject {
                                    callback: @escaping (Result<T, Error>) -> Void)
     /// Async/await
     func sendRequest<T: Decodable>(for type: T.Type,
-                                   endpoint: APIConfiguration) async -> Result<T, Error>
+                                   endpoint: APIConfiguration) async -> Result<T?, Error>
     /// Combine
     func sendRequest<T: Decodable>(for type: T.Type,
                                    endpoint: APIConfiguration) -> AnyPublisher<T, Error>
@@ -70,7 +70,7 @@ final class NetworkingManager: NetworkingManagerProtocol {
     // MARK: - Async/await
 
     func sendRequest<T: Decodable>(for type: T.Type = T.self,
-                                   endpoint: APIConfiguration) async -> Result<T, Error> {
+                                   endpoint: APIConfiguration) async -> Result<T?, Error> {
         guard let request = endpoint.asURLRequest(environment: environment) else {
             return .failure(NetworkingError.invalidRequest)
         }
